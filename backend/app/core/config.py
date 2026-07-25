@@ -11,10 +11,11 @@ class Settings(BaseSettings):
 
     ALLOWED_ORIGINS: List[str] = Field(default_factory=list)
 
+    DATABASE_URL: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=True,
     )
-
 
 settings = Settings()
