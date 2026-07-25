@@ -6,6 +6,7 @@ from app.core.config import settings
 from app.core.constants import ROOT_TAG, WELCOME_MESSAGE
 from app.core.lifespan import lifespan
 from app.middleware.request_logger import RequestLoggingMiddleware
+from app.exceptions.handlers import register_exception_handlers
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -13,6 +14,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Register global exception handlers
+register_exception_handlers(app)
+
+# Register middleware
 app.add_middleware(RequestLoggingMiddleware)
 
 app.add_middleware(
@@ -23,6 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Register API routes
 app.include_router(api_router)
 
 
