@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 
 from app.api.router import api_router
+from app.core.config import settings
 
 app = FastAPI(
-    title="Enterprise Contract Intelligence Platform",
-    version="1.0.0",
-    description="ECIP Backend API",
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION,
 )
 
 app.include_router(api_router)
@@ -14,5 +14,5 @@ app.include_router(api_router)
 @app.get("/", tags=["Root"])
 def root():
     return {
-        "message": "Welcome to Enterprise Contract Intelligence Platform"
+        "message": f"Welcome to {settings.APP_NAME}"
     }
