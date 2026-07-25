@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.router import api_router
 from app.core.config import settings
+from app.core.constants import ROOT_TAG, WELCOME_MESSAGE
 from app.core.lifespan import lifespan
 from app.middleware.request_logger import RequestLoggingMiddleware
 
@@ -12,10 +13,8 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Custom Middleware
 app.add_middleware(RequestLoggingMiddleware)
 
-# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.ALLOWED_ORIGINS,
@@ -24,12 +23,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# API Routes
 app.include_router(api_router)
 
 
-@app.get("/", tags=["Root"])
+@app.get("/", tags=[ROOT_TAG])
 def root():
     return {
-        "message": f"Welcome to {settings.APP_NAME}"
+        "message": f"{WELCOME_MESSAGE} {settings.APP_NAME}"
     }

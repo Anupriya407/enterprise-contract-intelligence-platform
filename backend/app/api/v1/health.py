@@ -1,10 +1,12 @@
 from fastapi import APIRouter
 
+from app.core.constants import HEALTH_STATUS, HEALTH_TAG
+
 router = APIRouter()
 
 
-@router.get("/health", tags=["Health"])
+@router.get("/health", tags=[HEALTH_TAG])
 def health():
     return {
-        "status": "healthy"
+        "status": HEALTH_STATUS
     }
