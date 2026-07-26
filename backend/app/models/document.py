@@ -1,7 +1,6 @@
 from datetime import datetime
 from uuid import uuid4
-
-from sqlalchemy import DateTime, Index, String
+from sqlalchemy import CheckConstraint, DateTime, Index, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base
@@ -12,8 +11,10 @@ class Document(Base):
     __tablename__ = "documents"
 
     __table_args__ = (
-        Index("ix_documents_filename", "filename"),
-        Index("ix_documents_created_at", "created_at"),
+    Index("ix_documents_filename", "filename"),
+    Index("ix_documents_created_at", "created_at"),
+    CheckConstraint("char_length(filename) > 0", name="ck_documents_filename_not_empty"),
+    CheckConstraint("char_length(file_path) > 0", name="ck_documents_file_path_not_empty"),
     )
 
     id: Mapped[str] = mapped_column(
