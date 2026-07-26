@@ -2,7 +2,7 @@
 name = "ecip-backend"
 version = "0.1.0"
 description = "Enterprise Contract Intelligence Platform Backend"
-requires-python = ">=3.13"
+requires-python = ">=3.11,<3.12"
 
 dependencies = [
     "fastapi",
@@ -10,7 +10,11 @@ dependencies = [
     "pydantic-settings",
     "sqlalchemy",
     "psycopg[binary]",
-    "paddleocr",
+    "alembic",
+    "python-dotenv",
+    "python-multipart",
+    "paddleocr==2.10.0",
+    "paddlepaddle==2.6.2",
     "pymupdf",
     "pillow",
 ]

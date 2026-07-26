@@ -12,6 +12,7 @@ from app.models.document import Document
 from app.repositories.document import DocumentRepository
 from app.schemas.document import DocumentUploadResponse
 from app.services.base import BaseService
+from app.services.ocr_service import OCRService
 from app.storage.hashing import calculate_sha256
 from app.storage.local import LocalStorage
 
@@ -94,12 +95,22 @@ class DocumentService(BaseService):
 
             document = self.create(document)
 
+            # -------------------------
+            # Process OCR
+            # -------------------------
+            OCRService.process_document(
+                db=self.db,
+                document=document,
+            )
+
             return DocumentUploadResponse(
-                message="Document uploaded successfully",
-                document_id=document.id,
-                filename=document.filename,
-                content_type=document.content_type,
-                file_path=document.file_path,
+            message="Document uploaded successfully",
+            document_id=document.id,
+            filename=document.filename,
+            content_type=document.content_type,
+            file_path=document.file_path,
+            ocr_status=document.ocr_status,
+            ocr_completed_at=document.ocr_completed_at,
             )
 
         except Exception:
