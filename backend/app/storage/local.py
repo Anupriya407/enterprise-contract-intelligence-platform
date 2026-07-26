@@ -14,7 +14,12 @@ class LocalStorage(Storage):
         raise NotImplementedError
 
     def delete(self, file_path: Path) -> None:
-        raise NotImplementedError
+        """Delete a stored file if it exists."""
+
+        target = self._root_directory / file_path
+
+        if target.exists():
+            target.unlink()
 
     def exists(self, file_path: Path) -> bool:
         return (self._root_directory / file_path).exists()
