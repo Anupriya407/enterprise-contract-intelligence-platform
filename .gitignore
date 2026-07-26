@@ -58,3 +58,6 @@ dist/
 # Jupyter
 # ==========================
 .ipynb_checkpoints/
+
+# Packaging
+*.egg-info/
