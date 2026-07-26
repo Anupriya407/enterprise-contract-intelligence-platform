@@ -1,12 +1,12 @@
-from abc import ABC, abstractmethod
+from fastapi import UploadFile
 from pathlib import Path
-
+from abc import ABC, abstractmethod
 
 class Storage(ABC):
     """Abstract interface for storage providers."""
 
     @abstractmethod
-    def save(self, source: Path) -> Path:
+    def save(self, file: UploadFile) -> Path:
         """Store a file and return its stored path."""
         raise NotImplementedError
 

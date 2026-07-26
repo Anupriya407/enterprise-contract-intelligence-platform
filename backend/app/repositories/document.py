@@ -15,6 +15,10 @@ class DocumentRepository(BaseRepository):
         statement = select(Document).where(Document.id == document_id)
         return self.db.scalar(statement)
 
+    def get_by_hash(self, file_hash: str) -> Document | None:
+        statement = select(Document).where(Document.file_hash == file_hash)
+        return self.db.scalar(statement)
+
     def get_all(self) -> list[Document]:
         statement = select(Document)
         return list(self.db.scalars(statement).all())

@@ -1,13 +1,15 @@
+import shutil
 from pathlib import Path
+from uuid import uuid4
+
+from fastapi import UploadFile
 
 from app.core.config import settings
 from app.storage.interfaces import Storage
-
 from app.storage.exceptions import (
     FileDeletionError,
     FileNotFoundStorageError,
 )
-
 
 class LocalStorage(Storage):
     """Local filesystem storage implementation."""
@@ -21,8 +23,18 @@ class LocalStorage(Storage):
 
         self._root_directory.mkdir(parents=True, exist_ok=True)
 
-    def save(self, source: Path) -> Path:
-        raise NotImplementedError
+    def save(self, file: UploadFile) -> Path:
+        """Save an uploaded file to local storage."""
+
+        extension = Path(file.filename).suffix
+        filename = f"{uuid4()}{extension}"
+
+        destination = self._root_directory / filename
+
+        with destination.open("wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        return Path(filename)
 
     def delete(self, file_path: Path) -> None:
         """Delete a stored file."""

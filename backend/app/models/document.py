@@ -38,6 +38,16 @@ class Document(Base):
         nullable=False,
     )
 
+    file_size: Mapped[int] = mapped_column(
+    nullable=False,
+    )
+
+    file_hash: Mapped[str] = mapped_column(
+    String(64),
+    nullable=False,
+    unique=True,
+    )
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow,
