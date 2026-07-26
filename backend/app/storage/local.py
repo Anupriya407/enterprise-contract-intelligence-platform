@@ -3,6 +3,11 @@ from pathlib import Path
 from app.core.config import settings
 from app.storage.interfaces import Storage
 
+from app.storage.exceptions import (
+    FileDeletionError,
+    FileNotFoundStorageError,
+)
+
 
 class LocalStorage(Storage):
     """Local filesystem storage implementation."""
@@ -20,12 +25,19 @@ class LocalStorage(Storage):
         raise NotImplementedError
 
     def delete(self, file_path: Path) -> None:
-        """Delete a stored file if it exists."""
+        """Delete a stored file."""
 
         target = self._root_directory / file_path
 
-        if target.exists():
+        if not target.exists():
+            raise FileNotFoundStorageError(f"File not found: {file_path}")
+
+        try:
             target.unlink()
+        except OSError as exc:
+            raise FileDeletionError(
+                f"Failed to delete file: {file_path}"
+            ) from exc
 
     def exists(self, file_path: Path) -> bool:
         return (self._root_directory / file_path).exists()
@@ -36,6 +48,8 @@ class LocalStorage(Storage):
         target = self._root_directory / file_path
 
         if not target.exists():
-            raise FileNotFoundError(f"File not found: {file_path}")
+            raise FileNotFoundStorageError(
+                f"File not found: {file_path}"
+            )
 
         return target.resolve()
