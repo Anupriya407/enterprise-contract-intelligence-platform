@@ -1,13 +1,19 @@
 from pathlib import Path
 
+from app.core.config import settings
 from app.storage.interfaces import Storage
 
 
 class LocalStorage(Storage):
     """Local filesystem storage implementation."""
 
-    def __init__(self, root_directory: Path):
-        self._root_directory = root_directory
+    def __init__(self, root_directory: Path | None = None):
+        self._root_directory = (
+            root_directory
+            if root_directory is not None
+            else Path(settings.STORAGE_DIRECTORY)
+        )
+
         self._root_directory.mkdir(parents=True, exist_ok=True)
 
     def save(self, source: Path) -> Path:

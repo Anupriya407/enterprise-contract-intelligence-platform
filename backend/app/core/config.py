@@ -13,9 +13,12 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str
 
+    STORAGE_DIRECTORY: str = "storage/documents"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=True,
     )
+
 
 settings = Settings()
