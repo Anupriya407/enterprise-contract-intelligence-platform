@@ -15,6 +15,11 @@ class Settings(BaseSettings):
 
     STORAGE_DIRECTORY: str = "storage/documents"
 
+    # OCR Settings
+    OCR_LANGUAGE: str = "en"
+    OCR_USE_GPU: bool = False
+    OCR_OUTPUT_DIRECTORY: str = "storage/ocr"
+
     MAX_UPLOAD_SIZE: int = 50 * 1024 * 1024  # 50 MB
 
     ALLOWED_FILE_EXTENSIONS: list[str] = [
