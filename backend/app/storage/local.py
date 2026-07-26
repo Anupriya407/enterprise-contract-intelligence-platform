@@ -25,4 +25,11 @@ class LocalStorage(Storage):
         return (self._root_directory / file_path).exists()
 
     def get_path(self, file_path: Path) -> Path:
-        return self._root_directory / file_path
+        """Return the absolute path of a stored file."""
+
+        target = self._root_directory / file_path
+
+        if not target.exists():
+            raise FileNotFoundError(f"File not found: {file_path}")
+
+        return target.resolve()
