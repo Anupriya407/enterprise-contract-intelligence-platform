@@ -8,6 +8,7 @@ class LocalStorage(Storage):
 
     def __init__(self, root_directory: Path):
         self._root_directory = root_directory
+        self._root_directory.mkdir(parents=True, exist_ok=True)
 
     def save(self, source: Path) -> Path:
         raise NotImplementedError
