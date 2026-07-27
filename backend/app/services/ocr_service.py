@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.models.document import Document, OCRStatus
 from app.ocr.engine import OCREngine
 from app.ocr.pdf_converter import PDFConverter
+from app.services.text_processing_service import TextProcessingService
 from app.storage.local import LocalStorage
 
 
@@ -18,7 +19,8 @@ class OCRService:
         document: Document,
     ) -> None:
         """
-        Run OCR on a stored PDF and update the document.
+        Run OCR on a stored PDF, process the extracted text,
+        and update the document.
         """
 
         try:
@@ -42,8 +44,14 @@ class OCRService:
                 text = OCREngine.extract_text(image)
                 extracted_pages.append(text)
 
-            # Save OCR results
-            document.extracted_text = "\n\n".join(extracted_pages)
+            # Combine OCR output
+            raw_text = "\n\n".join(extracted_pages)
+
+            # Process OCR text
+            clean_text = TextProcessingService.process(raw_text)
+
+            # Save processed text
+            document.extracted_text = clean_text
             document.ocr_status = OCRStatus.COMPLETED.value
             document.ocr_completed_at = datetime.utcnow()
 
