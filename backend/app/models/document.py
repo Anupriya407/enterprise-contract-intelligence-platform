@@ -21,6 +21,8 @@ class Document(Base):
     __table_args__ = (
         Index("ix_documents_filename", "filename"),
         Index("ix_documents_created_at", "created_at"),
+        Index("ix_documents_ocr_status", "ocr_status"),
+        Index("ix_documents_content_type", "content_type"),
         CheckConstraint(
             "char_length(filename) > 0",
             name="ck_documents_filename_not_empty",
