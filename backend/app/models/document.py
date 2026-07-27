@@ -62,12 +62,15 @@ class Document(Base):
         unique=True,
     )
 
+    # =========================
     # OCR Fields
+    # =========================
+
     ocr_status: Mapped[str] = mapped_column(
-    String(20),
-    nullable=False,
-    default=OCRStatus.PENDING.value,
-    server_default=OCRStatus.PENDING.value,
+        String(20),
+        nullable=False,
+        default=OCRStatus.PENDING.value,
+        server_default=OCRStatus.PENDING.value,
     )
 
     extracted_text: Mapped[str | None] = mapped_column(
@@ -79,6 +82,34 @@ class Document(Base):
         DateTime,
         nullable=True,
     )
+
+    # =========================
+    # Metadata Fields
+    # =========================
+
+    page_count: Mapped[int | None] = mapped_column(
+        nullable=True,
+    )
+
+    character_count: Mapped[int | None] = mapped_column(
+        nullable=True,
+    )
+
+    word_count: Mapped[int | None] = mapped_column(
+        nullable=True,
+    )
+
+    line_count: Mapped[int | None] = mapped_column(
+        nullable=True,
+    )
+
+    paragraph_count: Mapped[int | None] = mapped_column(
+        nullable=True,
+    )
+
+    # =========================
+    # Timestamps
+    # =========================
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
